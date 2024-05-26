@@ -2,6 +2,13 @@
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
+
+#Premium version of this file is available at  https://cupnooble.itch.io/sprout-lands-ui-pack
+/Assets/Sprout Lands - UI Pack - Basic pack/
+
+#Premium version of this file is available at https://cupnooble.itch.io/sprout-lands-asset-pack
+/Assets/Sprout Lands - Sprites - premium pack/
+
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
