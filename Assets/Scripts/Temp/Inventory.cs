@@ -21,8 +21,8 @@ public class Inventory : MonoBehaviour
 
     public void Remove(Crop crop)
     {
+        Debug.Log($"Removed crop {crop.Name} from inventory");
         _crop = null;
         _image.sprite = null;
-        Debug.Log($"Removed crop {crop.Name} from inventory");
     }
 }

@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public float MoveSpeed = 1f;
     public float RaycastDistance = 1f;
     public float RaycastDrawTime = 2f;
+    public float Gold = 0;
 
     [SerializeField] private LayerMask _interactableLayer;
     [SerializeField] private Inventory _inventory;
@@ -71,7 +72,7 @@ public class Player : MonoBehaviour
     private void OnMenu(InputAction.CallbackContext obj) => Debug.Log("Open menu");
     private void OnInteract(InputAction.CallbackContext obj)
     {
-        PlayerInteractionVisitor visitor = new PlayerInteractionVisitor(_inventory, _commandInvoker);
+        PlayerInteractionVisitor visitor = new PlayerInteractionVisitor(_inventory, _commandInvoker,this);
         _currentInteractable?.Accept(visitor);
     }
     private void Move(Vector2 direction) => _rigidbody.velocity = direction * MoveSpeed;
