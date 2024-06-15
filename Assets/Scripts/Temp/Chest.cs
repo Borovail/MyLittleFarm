@@ -3,8 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider2D),typeof(SpriteRenderer))]
 public class Chest : MonoBehaviour, IInteractable
 {
-    public float Gold;
-
+    [SerializeField] private float Gold;
     [SerializeField] private Sprite _openChestSprite;
 
     private Collider2D _collider;
@@ -25,6 +24,7 @@ public class Chest : MonoBehaviour, IInteractable
     {
         _collider.enabled = false;
         _spriteRenderer.sprite = _openChestSprite;
+        EventBus.AddGoldToPlayerInvoke(Gold);
         Debug.Log("Chest opened");
     }
 

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    public Crop _crop;
+    public Item _item;
 
     private Image _image;
 
@@ -12,17 +12,28 @@ public class Inventory : MonoBehaviour
         _image = GetComponent<Image>();
     }
 
-    public void Add(Crop crop)
+    private void OnEnable()
     {
-        _crop = crop;
-        _image.sprite = crop.Sprite;
-        Debug.Log($"Added crop {crop.Name} to inventory");
+        EventBus.AddItemToPlayer.AddListener(AddItem);
+        EventBus.RemoveItemFromPlayer.AddListener(RemoveItem);
     }
 
-    public void Remove(Crop crop)
+    private void OnDisable()
     {
-        Debug.Log($"Removed crop {crop.Name} from inventory");
-        _crop = null;
+        EventBus.AddItemToPlayer.RemoveListener(AddItem);
+        EventBus.RemoveItemFromPlayer.RemoveListener(RemoveItem);
+    }
+    private void AddItem(Item item)
+    {
+        _item  = item;
+        _image.sprite = item._crop.Sprite;
+        Debug.Log($"Added crop {item._crop.Name} to inventory");
+    }
+
+    private void RemoveItem(Item item)
+    {
+        Debug.Log($"Removed crop {item._crop.Name} from inventory");
+        _item = null;
         _image.sprite = null;
     }
 }

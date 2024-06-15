@@ -14,23 +14,20 @@
     public void Visit(Crop crop)
     {
         _commandInvoker.ExecuteCommand(new HarvestCommand(crop));
-        _commandInvoker.ExecuteCommand(new AddItemToInventoryCommand(_inventory, crop));
     }
 
     public void Visit(Field field)
     {
-        _commandInvoker.ExecuteCommand(new PlantCommand(field,_inventory._crop));
-        _commandInvoker.ExecuteCommand(new RemoveItemFromInventoryCommand(_inventory,_inventory._crop));
+        _commandInvoker.ExecuteCommand(new PlantCommand(field,_inventory._item._crop));
     }
 
     public void Visit(ShopController shop)
     {
-        shop.Interact(_inventory,_player.Gold);
+        _commandInvoker.ExecuteCommand(new ShopInteractionCommand(shop, _inventory, _player.Gold));
     }
 
     public void Visit(Chest chest)
     {
-        _commandInvoker.ExecuteCommand(new AddGoldToPlayerCommand(_player, chest.Gold));
         _commandInvoker.ExecuteCommand(new OpenChestCommand(chest));
     }
 }

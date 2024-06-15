@@ -4,9 +4,9 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-    public float MoveSpeed = 1f;
-    public float RaycastDistance = 1f;
-    public float RaycastDrawTime = 2f;
+    [SerializeField] private float MoveSpeed = 1f;
+    [SerializeField] private float RaycastDistance = 1f;
+    [SerializeField] private float RaycastDrawTime = 2f;
     public float Gold = 0;
 
     [SerializeField] private LayerMask _interactableLayer;
@@ -35,6 +35,7 @@ public class Player : MonoBehaviour
         _playerInputsActions.Player.Enable();
         _playerInputsActions.Player.Interact.performed += OnInteract;
         _playerInputsActions.Player.Menu.performed += OnMenu;
+        EventBus.AddGoldToPlayer.AddListener((float goldAmount) => { Gold += goldAmount; });
     }
 
 
@@ -43,6 +44,7 @@ public class Player : MonoBehaviour
         _playerInputsActions.Player.Interact.performed -= OnInteract;
         _playerInputsActions.Player.Menu.performed -= OnMenu;
         _playerInputsActions.Player.Disable();
+        EventBus.AddGoldToPlayer.RemoveAllListeners();
     }
 
     private void FixedUpdate()
@@ -72,7 +74,7 @@ public class Player : MonoBehaviour
     private void OnMenu(InputAction.CallbackContext obj) => Debug.Log("Open menu");
     private void OnInteract(InputAction.CallbackContext obj)
     {
-        PlayerInteractionVisitor visitor = new PlayerInteractionVisitor(_inventory, _commandInvoker,this);
+        PlayerInteractionVisitor visitor = new PlayerInteractionVisitor(_inventory, _commandInvoker, this);
         _currentInteractable?.Accept(visitor);
     }
     private void Move(Vector2 direction) => _rigidbody.velocity = direction * MoveSpeed;

@@ -4,17 +4,17 @@ public class Shop
 {
     public Item _item; //Fix that later
 
-    public void BuyItem(Crop item)
+    public void BuyItem(Item item)
     {
-        _item._crop = item;
-        _item._amount = 1;
+        _item = item;
+        EventBus.RemoveItemFromShopInvoke(item);
         Debug.Log("Item bought " + item);
     }
 
-    public void SellItem(Crop item)
+    public void SellItem(Item item)
     {
-        _item._crop = null;
-        _item._amount = 0;
+        _item = null;
+        EventBus.AddItemToShopInvoke(item);
         Debug.Log("Item sold: " + item);
     }
 

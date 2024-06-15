@@ -5,6 +5,7 @@ public class Crop : MonoBehaviour, IInteractable
 {
     public string Name;
     public Sprite Sprite;
+    public float Price;
     public Field _field;
 
     private void Awake()

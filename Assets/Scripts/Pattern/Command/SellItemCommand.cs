@@ -1,20 +1,28 @@
-﻿///можно отрефакторить  с помощью разделения  отвецтвенности  и создания  отдельной команді  для обновления  UI
+﻿
+using UnityEngine;
+
+///можно отрефакторить  с помощью разделения  отвецтвенности  и создания  отдельной команді  для обновления  UI
 public class SellItemCommand : Command   
 {
     Shop _shop;
-    ShopUI _shopUI;
-    Crop _crop;
-    public SellItemCommand(Crop crop, Shop shop, ShopUI shopUI)
+    Item _item;
+    float _playerGold;
+    public SellItemCommand(Item item, Shop shop,float playerGold)
     {
-        _crop = crop;
+        _item = item;
         _shop = shop;
-        _shopUI = shopUI;
+        _playerGold = playerGold;
     }
     public override void Execute()
     {
-        _shop.SellItem(_crop);
-        _shopUI.SetProductCount(0);
-        _shopUI.SetProductImage(null);
+        if(_item._crop.Price <= _playerGold)
+        {
+           _shop.SellItem(_item);
+        }
+        else
+        {
+            Debug.Log($"Not enough gold for purchase.\n Needed gold: {_item._crop.Price}, current gold: {_playerGold}");
+        }
     }
 }
 

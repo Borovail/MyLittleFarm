@@ -1,20 +1,28 @@
-﻿public class BuyItemCommand : Command
+﻿
+using UnityEngine;
+
+public class BuyItemCommand : Command
 {
     Shop _shop;
-    ShopUI _shopUI;
-    Crop _crop;
+    Item _item;
+    float _shopGoldAmount;
 
-    public BuyItemCommand(Crop crop,Shop shop,ShopUI shopUI)
+    public BuyItemCommand(Item item, Shop shop, float shopGoldAmount)
     {
-        _crop = crop;
+        _item = item;
         _shop = shop;
-        _shopUI = shopUI;
+        _shopGoldAmount = shopGoldAmount;
     }
     public override void Execute()
     {
-        _shop.BuyItem(_crop);
-        _shopUI.SetProductCount(1);
-        _shopUI.SetProductImage(_crop.Sprite);
+        if (_shopGoldAmount >= _item._crop.Price)
+        {
+            _shop.BuyItem(_item);
+        }
+        else
+        {
+            Debug.Log($"Shop does not have enough gold to buy an item.\nShop's balance: {_shopGoldAmount}, needed gold: _item._crop.Price");
+        }
     }
 }
 
