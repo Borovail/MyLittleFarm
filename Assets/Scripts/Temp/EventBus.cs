@@ -1,26 +1,41 @@
-﻿using System.Diagnostics;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 
+
+
+///Сделать словарь  ивентов  на основе типа  как ключа  и ивента  как значения
+///Методы для  подписки отписки и для оповещения  и для удаления всех подписчиков
 public static class EventBus
 {
-    public static UnityEvent<float> AddGoldToPlayer { get; } = new();
-    public static UnityEvent<Item> AddItemToPlayer { get; } = new();
-    public static UnityEvent<Item> RemoveItemFromPlayer { get; } = new();
+    public static UnityEvent<float> PlayerGoldChanged { get; } = new();
+    public static UnityEvent<Item> ItemAddedToPlayer { get; } = new();
+    public static UnityEvent<Item> ItemRemovedFromPlayer { get; } = new();
 
-    public static UnityEvent<Item> AddItemToShop { get; } = new();
-    public static UnityEvent<Item> RemoveItemFromShop { get; } = new();
+    public  static UnityEvent PlayerInteractedWithShop { get; } = new();
+    public static UnityEvent<Item> ItemBought { get; } = new();
+    public static UnityEvent<Item> ItemSold { get; } = new();
+    public static UnityEvent BuyButtonClicked { get; } = new();
+    public static UnityEvent SellButtonClicked { get; } = new();
 
-    public static void AddGoldToPlayerInvoke(float amount) => AddGoldToPlayer.Invoke(amount);
-    public static void AddItemToPlayerInvoke(Item item) => AddItemToPlayer.Invoke(item);
-    public static void RemoveItemFromPlayerInvoke(Item item) => RemoveItemFromPlayer.Invoke(item);
-    public static void AddItemToShopInvoke(Item item)
+    public static void PlayerGoldChangedInvoke(float amount) => PlayerGoldChanged?.Invoke(amount);
+    public static void ItemAddedToPlayerInvoke(Item item) => ItemAddedToPlayer?.Invoke(item);
+    public static void ItemRemovedFromPlayerInvoke(Item item) => ItemRemovedFromPlayer?.Invoke(item);
+    public static void ItemBoughtInvoke(Item item)
     {
-        AddItemToShop.Invoke(item);
-        AddItemToPlayer.Invoke(item);
+        ItemBought?.Invoke(item);
+        ItemRemovedFromPlayer?.Invoke(item);
+        PlayerGoldChanged?.Invoke(item.Price);
     }
-    public static void RemoveItemFromShopInvoke(Item item) 
+    public static void ItemSoldInvoke(Item item)
     {
-        RemoveItemFromShop.Invoke(item);
-        RemoveItemFromPlayer.Invoke(item);
+        ItemSold?.Invoke(item);
+        ItemAddedToPlayer?.Invoke(item);
+        PlayerGoldChanged?.Invoke(-item.Price);
     }
+    public static void BuyButtonClickedInvoke() => BuyButtonClicked?.Invoke();
+    public static void SellButtonClickedInvoke() => SellButtonClicked?.Invoke();
+    public static void PlayerInteractedWithShopInvoke()
+    {
+        PlayerInteractedWithShop?.Invoke();
+    }
+
 }

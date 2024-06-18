@@ -1,54 +1,40 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ShopController : MonoBehaviour, IInteractable
 {
-    [SerializeField] private ShopUI _shopUI;
-    
+    public ShopUI ShopUI;
+
 
     private Shop _shop;
     private CommandInvoker _commandInvoker;
-    private Inventory _inventory;
-    private float _playerGoldAmount;
-    private float _shopGoldAmount;
+
+    [SerializeField] private Crop _initialCrop;
+    [SerializeField] private Player _player;
+    [SerializeField] private Inventory _inventory;
+
 
     private void Start()
     {
-        _shop = new Shop();
+        _shop = new();
+        _shop._item = new Item(_initialCrop,1);
+        EventBus.ItemBought.Invoke(_shop._item);
         _commandInvoker = new CommandInvoker();
-        _shopGoldAmount = 0;
     }
 
     private void OnEnable()
     {
-        _shopUI._buyButton.onClick.AddListener(BuyItem);
-        _shopUI._sellButton.onClick.AddListener(SellItem);
+        EventBus.BuyButtonClicked.AddListener(() =>{
+            _commandInvoker.ExecuteCommand(new SellItemCommand(_shop,_player.Gold));
+        });
+        EventBus.SellButtonClicked.AddListener(() =>{
+            _commandInvoker.ExecuteCommand(new BuyItemCommand(_shop, _inventory._item));
+        });
     }
 
     private void OnDisable()
     {
-        _shopUI._buyButton.onClick.RemoveListener(BuyItem);
-        _shopUI._sellButton.onClick.RemoveListener(SellItem);
-    }
-
-    public void Interact(Inventory inventory,float playerGoldAmount)
-    {
-        _inventory = inventory;
-        _playerGoldAmount = playerGoldAmount;
-
-        if (_shopUI._shopOpen)
-            _shopUI.HideUI();
-        else
-            _shopUI.ShowUI();
-    }
-
-    private void BuyItem()
-    {
-        _commandInvoker.ExecuteCommand(new SellItemCommand(_shop._item, _shop, _playerGoldAmount));
-    }
-
-    private void SellItem()
-    {
-        _commandInvoker.ExecuteCommand(new BuyItemCommand(_inventory._item, _shop, _shopGoldAmount));
+        EventBus.SellButtonClicked?.RemoveAllListeners();
+        EventBus.BuyButtonClicked?.RemoveAllListeners();
     }
 
     public void Accept(IInteractionVisitor interactionVisitor)

@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
         _playerInputsActions.Player.Enable();
         _playerInputsActions.Player.Interact.performed += OnInteract;
         _playerInputsActions.Player.Menu.performed += OnMenu;
-        EventBus.AddGoldToPlayer.AddListener((float goldAmount) => { Gold += goldAmount; });
+        EventBus.PlayerGoldChanged.AddListener((float goldAmount) => { Gold += goldAmount; });
     }
 
 
@@ -44,7 +44,7 @@ public class Player : MonoBehaviour
         _playerInputsActions.Player.Interact.performed -= OnInteract;
         _playerInputsActions.Player.Menu.performed -= OnMenu;
         _playerInputsActions.Player.Disable();
-        EventBus.AddGoldToPlayer.RemoveAllListeners();
+        EventBus.PlayerGoldChanged.RemoveAllListeners();
     }
 
     private void FixedUpdate()
@@ -69,7 +69,6 @@ public class Player : MonoBehaviour
         }
 
     }
-
 
     private void OnMenu(InputAction.CallbackContext obj) => Debug.Log("Open menu");
     private void OnInteract(InputAction.CallbackContext obj)

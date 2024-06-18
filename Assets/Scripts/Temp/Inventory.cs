@@ -14,14 +14,14 @@ public class Inventory : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus.AddItemToPlayer.AddListener(AddItem);
-        EventBus.RemoveItemFromPlayer.AddListener(RemoveItem);
+        EventBus.ItemAddedToPlayer.AddListener(AddItem);
+        EventBus.ItemRemovedFromPlayer.AddListener(RemoveItem);
     }
 
     private void OnDisable()
     {
-        EventBus.AddItemToPlayer.RemoveListener(AddItem);
-        EventBus.RemoveItemFromPlayer.RemoveListener(RemoveItem);
+        EventBus.ItemAddedToPlayer.RemoveListener(AddItem);
+        EventBus.ItemRemovedFromPlayer.RemoveListener(RemoveItem);
     }
     private void AddItem(Item item)
     {

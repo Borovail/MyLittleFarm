@@ -24,9 +24,11 @@ public class Chest : MonoBehaviour, IInteractable
     {
         _collider.enabled = false;
         _spriteRenderer.sprite = _openChestSprite;
-        EventBus.AddGoldToPlayerInvoke(Gold);
+        EventBus.PlayerGoldChangedInvoke(Gold);
         Debug.Log("Chest opened");
     }
+
+        
 
 
 }

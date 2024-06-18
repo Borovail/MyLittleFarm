@@ -22,7 +22,7 @@ public class Field : MonoBehaviour, IInteractable
         _crops.Remove(crop);
         crop.gameObject.SetActive(false);
         _collider.enabled = true;
-        EventBus.AddItemToPlayerInvoke(new Item(crop,1));
+        EventBus.ItemAddedToPlayerInvoke(new Item(crop,1));
         Debug.Log("Harvested " + crop.Name);
     }
 
@@ -32,7 +32,7 @@ public class Field : MonoBehaviour, IInteractable
         crop.transform.position = transform.position;
         crop.gameObject.SetActive(true);
         _collider.enabled = false;
-        EventBus.RemoveItemFromPlayerInvoke(new Item(crop,1));
+        EventBus.ItemRemovedFromPlayerInvoke(new Item(crop,1));
         Debug.Log("Planted " + crop.Name);
     }
 

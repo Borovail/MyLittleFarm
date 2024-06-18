@@ -21,13 +21,15 @@
         _commandInvoker.ExecuteCommand(new PlantCommand(field,_inventory._item._crop));
     }
 
-    public void Visit(ShopController shop)
+    public void Visit(ShopController shopController)
     {
-        _commandInvoker.ExecuteCommand(new ShopInteractionCommand(shop, _inventory, _player.Gold));
+        _commandInvoker.ExecuteCommand(new PlayerShopInteractionCommand(shopController.ShopUI));
     }
 
     public void Visit(Chest chest)
     {
         _commandInvoker.ExecuteCommand(new OpenChestCommand(chest));
     }
+
+    ///вопрос  как будет нужно реализовать подбор предмета когда прямое децствие єто добавление в инвентарь а для этого уже есть ивент
 }

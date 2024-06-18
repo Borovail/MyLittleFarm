@@ -3,46 +3,52 @@ using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
-    [SerializeField] private Crop _initialCrop;
     [SerializeField] private Text _productCount;
     [SerializeField] private Image _productImage;
-    public Button _buyButton;
-    public Button _sellButton;
-    public bool _shopOpen = false;
+    [SerializeField] private Button _buyButton;
+    [SerializeField] private Button _sellButton;
+
 
     private void OnEnable()
     {
-        EventBus.AddItemToShop.AddListener(OnItemAdded);
-        EventBus.RemoveItemFromShop.AddListener(OnItemRemoved);
+        _buyButton.onClick.AddListener(EventBus.BuyButtonClickedInvoke);
+        _sellButton.onClick.AddListener(EventBus.SellButtonClickedInvoke);
+        EventBus.ItemBought.AddListener(OnItemBought);
+        EventBus.ItemSold.AddListener(OnItemSold);
+
+
+
+        //EventBus.ItemBought.AddListener(OnItemSold);
+        //EventBus.ItemSold.AddListener(OnItemBought);
     }
 
     private void OnDisable()
     {
-        EventBus.AddItemToShop.RemoveListener(OnItemAdded);
-        EventBus.RemoveItemFromShop.RemoveListener(OnItemRemoved);
+        _buyButton.onClick.RemoveListener(EventBus.BuyButtonClickedInvoke);
+        _sellButton.onClick.RemoveListener(EventBus.SellButtonClickedInvoke);
+        EventBus.ItemBought.RemoveListener(OnItemBought);
+        EventBus.ItemSold.RemoveListener(OnItemSold);
+
+
+        //EventBus.ItemBought.RemoveListener(OnItemSold);
+        //EventBus.ItemSold.RemoveListener(OnItemBought);
     }
 
-    private void Start()
+    private void OnItemSold(Item item)
     {
-        SetProductImage(_initialCrop.Sprite);
-        SetProductCount(1);
-    }
-
-    private void OnItemAdded(Item item)
-    {
-        SetProductCount(1);
-        SetProductImage(item._crop.Sprite);
-    }
-
-    private void OnItemRemoved(Item item)
-    {
-        SetProductCount(0);
         SetProductImage(null);
+        SetProductCount(0);
+    }
+
+    private void OnItemBought(Item item)
+    {
+        SetProductCount(item._amount);
+        SetProductImage(item._crop.Sprite);
     }
 
     public void SetProductCount(int count)
     {
-        _productCount.text ="Count: " + count.ToString();
+        _productCount.text = "Count: " + count.ToString();
     }
 
     public void SetProductImage(Sprite sprite)
@@ -52,13 +58,11 @@ public class ShopUI : MonoBehaviour
 
     public void ShowUI()
     {
-        _shopOpen = true;
         gameObject.SetActive(true);
     }
 
     public void HideUI()
     {
-        _shopOpen = false;
         gameObject.SetActive(false);
     }
 }
