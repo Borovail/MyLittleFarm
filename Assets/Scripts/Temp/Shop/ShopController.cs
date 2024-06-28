@@ -9,9 +9,9 @@ public class ShopController : MonoBehaviour, IInteractable
     private CommandInvoker _commandInvoker;
 
     [SerializeField] private Crop _initialCrop;
+
     [SerializeField] private Player _player;
     [SerializeField] private Inventory _inventory;
-
 
     private void Start()
     {

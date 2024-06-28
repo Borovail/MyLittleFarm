@@ -4,7 +4,7 @@ using UnityEngine;
 public class Shop   //Later implement to some MVC MVP MVE pattern
 {
     public Item _item; //Fix that later
-    public float Gold;
+    public float Gold; /*{ get; private set; } */
     public void BuyItem(Item item)
     {
         Gold -= item.Price;
