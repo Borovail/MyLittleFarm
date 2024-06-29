@@ -1,24 +1,28 @@
-using Unity.VisualScripting;
-using UnityEngine;
 
-public class Shop   //Later implement to some MVC MVP MVE pattern
+using System.Collections.Generic;
+using UnityEngine.Events;
+
+public class Shop
 {
-    public Item _item; //Fix that later
-    public float Gold; /*{ get; private set; } */
-    public void BuyItem(Item item)
+    private List<ShopItem> _shopItems = new List<ShopItem>();
+
+    public UnityEvent<ShopItem> ShopBoughtItem { get; private set; } = new UnityEvent<ShopItem>();
+    public UnityEvent<ShopItem> ShopSoldItem { get; private set; } = new UnityEvent<ShopItem>();
+
+    public void BuyItem(ShopItem shopItem)
     {
-        Gold -= item.Price;
-        _item = item;
-        Debug.Log("Item bought " + item);
-        EventBus.ItemBoughtInvoke(item);
+        shopItem.Amount++;
+        ShopBoughtItem.Invoke(shopItem);
+
     }
 
-    public void SellItem()
+    public void SellItem(ShopItem shopItem)
     {
-        Debug.Log("Item sold: " + _item);
-        EventBus.ItemSoldInvoke(_item);
-        Gold+= _item.Price;
-        _item = null;
+        shopItem.Amount--;
+        ShopSoldItem.Invoke(shopItem);
     }
+
+    public bool HasItem(ShopItem shopItem) => _shopItems.Contains(shopItem);
+
 
 }

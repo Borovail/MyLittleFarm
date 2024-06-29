@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float MoveSpeed = 1f;
     [SerializeField] private float RaycastDistance = 1f;
     [SerializeField] private float RaycastDrawTime = 2f;
-    public float Gold = 0;
+    private PlayerStats _playerStats = new PlayerStats(0);
 
     [SerializeField] private LayerMask _interactableLayer;
     [SerializeField] private Inventory _inventory;
@@ -35,7 +35,6 @@ public class Player : MonoBehaviour
         _playerInputsActions.Player.Enable();
         _playerInputsActions.Player.Interact.performed += OnInteract;
         _playerInputsActions.Player.Menu.performed += OnMenu;
-        EventBus.PlayerGoldChanged.AddListener((float goldAmount) => { Gold += goldAmount; });
     }
 
 
@@ -44,7 +43,6 @@ public class Player : MonoBehaviour
         _playerInputsActions.Player.Interact.performed -= OnInteract;
         _playerInputsActions.Player.Menu.performed -= OnMenu;
         _playerInputsActions.Player.Disable();
-        EventBus.PlayerGoldChanged.RemoveAllListeners();
     }
 
     private void FixedUpdate()

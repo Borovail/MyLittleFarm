@@ -4,9 +4,9 @@ using UnityEngine;
 public class BuyItemCommand : Command
 {
     Shop _shop;
-    Item _item;
+    ShopItem _item;
 
-    public BuyItemCommand(Shop shop,Item item)
+    public BuyItemCommand(Shop shop, ShopItem item)
     {
         _item = item;
         _shop = shop;
@@ -18,14 +18,13 @@ public class BuyItemCommand : Command
             Debug.Log("Item to buy is null");
             return;
         }
-
-        if (_shop.Gold >= _item.Price)
+        if (_shop.HasItem(_item))
         {
             _shop.BuyItem(_item);
         }
         else
         {
-            Debug.Log($"Shop does not have enough gold to buy an item.\nShop's balance: {_shop.Gold}, needed gold: {_item.Price}");
+            Debug.Log($"Item {_item.Name} is not available in the shop");
         }
     }
 }

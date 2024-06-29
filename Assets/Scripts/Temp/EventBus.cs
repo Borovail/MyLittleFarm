@@ -13,8 +13,6 @@ public static class EventBus
     public  static UnityEvent PlayerInteractedWithShop { get; } = new();
     public static UnityEvent<Item> ItemBought { get; } = new();
     public static UnityEvent<Item> ItemSold { get; } = new();
-    public static UnityEvent BuyButtonClicked { get; } = new();
-    public static UnityEvent SellButtonClicked { get; } = new();
 
     public static void PlayerGoldChangedInvoke(float amount) => PlayerGoldChanged?.Invoke(amount);
     public static void ItemAddedToPlayerInvoke(Item item) => ItemAddedToPlayer?.Invoke(item);
@@ -31,8 +29,6 @@ public static class EventBus
         ItemAddedToPlayer?.Invoke(item);
         PlayerGoldChanged?.Invoke(-item.Price);
     }
-    public static void BuyButtonClickedInvoke() => BuyButtonClicked?.Invoke();
-    public static void SellButtonClickedInvoke() => SellButtonClicked?.Invoke();
     public static void PlayerInteractedWithShopInvoke()
     {
         PlayerInteractedWithShop?.Invoke();

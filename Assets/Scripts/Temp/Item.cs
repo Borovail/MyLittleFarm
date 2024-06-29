@@ -1,4 +1,7 @@
-﻿public class Item
+﻿using System;
+
+[Serializable]
+public class Item
 {
     public Crop _crop;
     public int _amount;

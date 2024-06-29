@@ -1,68 +1,79 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ShopUI : MonoBehaviour
 {
-    [SerializeField] private Text _productCount;
-    [SerializeField] private Image _productImage;
+
+    private List<ShopItemUI> _shopItemUIs = new List<ShopItemUI>();
+    private ShopItemUI _currentShopItemUI;
+
+    [SerializeField] private Text _totalAmount;
+    [SerializeField] private Text _totalPrice;
+    [SerializeField] private Slider _totalAmountSlider;
+
     [SerializeField] private Button _buyButton;
     [SerializeField] private Button _sellButton;
 
+    [SerializeField] private GameObject _shopItemUIPrefab;
+    [SerializeField] private Transform _shopLayoutGroup;
+
+    public UnityEvent<ShopItem> BuyButtonClicked { get; private set; } = new ();
+    public UnityEvent SellButtonClicked { get; private set; } = new();
 
     private void OnEnable()
     {
-        _buyButton.onClick.AddListener(EventBus.BuyButtonClickedInvoke);
-        _sellButton.onClick.AddListener(EventBus.SellButtonClickedInvoke);
-        EventBus.ItemBought.AddListener(OnItemBought);
-        EventBus.ItemSold.AddListener(OnItemSold);
-
-
-
-        //EventBus.ItemBought.AddListener(OnItemSold);
-        //EventBus.ItemSold.AddListener(OnItemBought);
+        _buyButton.onClick.AddListener( () =>  BuyButtonClicked.Invoke(_currentShopItemUI.ShopItem));
+        _sellButton.onClick.AddListener(SellButtonClicked.Invoke);
+        _totalAmountSlider.onValueChanged.AddListener(OnSliderValueChanged);
+        foreach (var shopItemUI in _shopItemUIs)
+        {
+            shopItemUI.ItemClicked.AddListener(OnShopItemClicked);
+        }
     }
 
     private void OnDisable()
     {
-        _buyButton.onClick.RemoveListener(EventBus.BuyButtonClickedInvoke);
-        _sellButton.onClick.RemoveListener(EventBus.SellButtonClickedInvoke);
-        EventBus.ItemBought.RemoveListener(OnItemBought);
-        EventBus.ItemSold.RemoveListener(OnItemSold);
-
-
-        //EventBus.ItemBought.RemoveListener(OnItemSold);
-        //EventBus.ItemSold.RemoveListener(OnItemBought);
+        _buyButton.onClick.RemoveListener( () =>  BuyButtonClicked.Invoke(_currentShopItemUI.ShopItem));
+        _sellButton.onClick.RemoveListener(SellButtonClicked.Invoke);
+        _totalAmountSlider.onValueChanged.RemoveListener(OnSliderValueChanged);
+        foreach (var shopItemUI in _shopItemUIs)
+        {
+            shopItemUI.ItemClicked.RemoveListener(OnShopItemClicked);
+        }
     }
 
-    private void OnItemSold(Item item)
+    private void OnShopItemClicked(ShopItemUI shopItemUI)
     {
-        SetProductImage(null);
-        SetProductCount(0);
+        _currentShopItemUI = shopItemUI;
+        _totalAmountSlider.value = 0;
+        _totalAmountSlider.maxValue = shopItemUI.ShopItem.Amount;
     }
 
-    private void OnItemBought(Item item)
+    private void OnSliderValueChanged(float value)
     {
-        SetProductCount(item._amount);
-        SetProductImage(item._crop.Sprite);
+        _totalAmount.text = value.ToString();
+        _totalPrice.text = (_currentShopItemUI.ShopItem.Price * value).ToString();
     }
 
-    public void SetProductCount(int count)
+    public void UpdateUI(ShopItem shopItem)
     {
-        _productCount.text = "Count: " + count.ToString();
-    }
-
-    public void SetProductImage(Sprite sprite)
-    {
-        _productImage.sprite = sprite;
-    }
-
-    public void ShowUI()
-    {
-        gameObject.SetActive(true);
+        _currentShopItemUI.UpdateItemCount(shopItem.Amount);
+        _totalAmountSlider.value = 0;
+        Debug.Log($"ShopUI updated with {shopItem}");
     }
 
     public void HideUI()
     {
+        Debug.Log("ShopUI is hidden");
         gameObject.SetActive(false);
     }
+
+    public void ShowUI()
+    {
+        Debug.Log("ShopUI is shown");
+        gameObject.SetActive(true);
+    }
+
 }
