@@ -1,26 +1,12 @@
 ﻿using System;
 
-public class PlayerStats : IDisposable
+public class PlayerStats
 {
-    private int _gold;
-
-    public int Gold
-    {
-        get => _gold;
-        set
-        {
-            _gold = value;
-            EventBus.PlayerGoldChanged.Invoke(_gold);
-        }
-    }
+    public int Gold { get; set; }
 
     public PlayerStats(int gold)
     {
-        _gold = gold;
+        Gold = gold;
     }
 
-    public void Dispose()
-    {
-        EventBus.PlayerGoldChanged.RemoveAllListeners();
-    }
 }

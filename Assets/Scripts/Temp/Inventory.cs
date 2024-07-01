@@ -14,25 +14,25 @@ public class Inventory : MonoBehaviour
 
     private void OnEnable()
     {
-        EventBus.ItemAddedToPlayer.AddListener(AddItem);
-        EventBus.ItemRemovedFromPlayer.AddListener(RemoveItem);
+        //EventBus.ItemAddedToPlayer.AddListener(AddItem);
+        //EventBus.ItemRemovedFromPlayer.AddListener(RemoveItem);
     }
 
     private void OnDisable()
     {
-        EventBus.ItemAddedToPlayer.RemoveListener(AddItem);
-        EventBus.ItemRemovedFromPlayer.RemoveListener(RemoveItem);
+        //EventBus.ItemAddedToPlayer.RemoveListener(AddItem);
+        //EventBus.ItemRemovedFromPlayer.RemoveListener(RemoveItem);
     }
     private void AddItem(Item item)
     {
         _item  = item;
-        _image.sprite = item._crop.Sprite;
-        Debug.Log($"Added crop {item._crop.Name} to inventory");
+        //_image.sprite = item._crop.Sprite;
+        //Debug.Log($"Added crop {item._crop.Name} to inventory");
     }
 
     private void RemoveItem(Item item)
     {
-        Debug.Log($"Removed crop {item._crop.Name} from inventory");
+        //Debug.Log($"Removed crop {item._crop.Name} from inventory");
         _item = null;
         _image.sprite = null;
     }

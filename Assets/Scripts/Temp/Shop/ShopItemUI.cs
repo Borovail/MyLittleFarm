@@ -11,9 +11,9 @@ public class ShopItemUI : MonoBehaviour, IPointerClickHandler
 
     public UnityEvent<ShopItemUI> ItemClicked { get; private set; } = new UnityEvent<ShopItemUI>();
 
-    private ShopItem _shopItem;
+    private Item _shopItem;
 
-    public ShopItem ShopItem
+    public Item ShopItem
     {
         get { return _shopItem; }
         set 

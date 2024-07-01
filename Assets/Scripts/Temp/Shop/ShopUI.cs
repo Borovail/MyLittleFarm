@@ -19,7 +19,7 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GameObject _shopItemUIPrefab;
     [SerializeField] private Transform _shopLayoutGroup;
 
-    public UnityEvent<ShopItem> BuyButtonClicked { get; private set; } = new ();
+    public UnityEvent<Item> BuyButtonClicked { get; private set; } = new ();
     public UnityEvent SellButtonClicked { get; private set; } = new();
 
     private void OnEnable()
@@ -57,7 +57,7 @@ public class ShopUI : MonoBehaviour
         _totalPrice.text = (_currentShopItemUI.ShopItem.Price * value).ToString();
     }
 
-    public void UpdateUI(ShopItem shopItem)
+    public void UpdateUI(Item shopItem)
     {
         _currentShopItemUI.UpdateItemCount(shopItem.Amount);
         _totalAmountSlider.value = 0;

@@ -4,9 +4,9 @@ using UnityEngine;
 public class BuyItemCommand : Command
 {
     Shop _shop;
-    ShopItem _item;
+    Item _item;
 
-    public BuyItemCommand(Shop shop, ShopItem item)
+    public BuyItemCommand(Shop shop, Item item)
     {
         _item = item;
         _shop = shop;

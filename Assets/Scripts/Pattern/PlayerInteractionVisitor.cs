@@ -18,7 +18,7 @@
 
     public void Visit(Field field)
     {
-        _commandInvoker.ExecuteCommand(new PlantCommand(field,_inventory._item._crop));
+        //_commandInvoker.ExecuteCommand(new PlantCommand(field,_inventory._item._crop));
     }
 
     public void Visit(ShopController shopController)

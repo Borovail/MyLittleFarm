@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class SellItemCommand : Command   
 {
-    private ShopItem _shopItem;
+    private Item _shopItem;
     private Shop _shop;
     private float _playerGold;
-    public SellItemCommand(Shop shop,ShopItem shopItem,float playerGold)
+    public SellItemCommand(Shop shop,Item shopItem,float playerGold)
     {
         _shop = shop;
         _shopItem = shopItem;

@@ -8,6 +8,12 @@ public class Chest : MonoBehaviour, IInteractable
 
     private Collider2D _collider;
     private SpriteRenderer _spriteRenderer;
+    private EventBus _eventBus;
+
+    public void Initialize(EventBus eventBus)
+    {
+        _eventBus = eventBus;
+    }
 
     private void Awake()
     {
@@ -24,7 +30,7 @@ public class Chest : MonoBehaviour, IInteractable
     {
         _collider.enabled = false;
         _spriteRenderer.sprite = _openChestSprite;
-        EventBus.PlayerGoldChangedInvoke(Gold);
+        _eventBus.PlayerGoldChangedInvoke(Gold);
         Debug.Log("Chest opened");
     }
 

@@ -4,25 +4,25 @@ using UnityEngine.Events;
 
 public class Shop
 {
-    private List<ShopItem> _shopItems = new List<ShopItem>();
+    private List<Item> _shopItems = new List<Item>();
 
-    public UnityEvent<ShopItem> ShopBoughtItem { get; private set; } = new UnityEvent<ShopItem>();
-    public UnityEvent<ShopItem> ShopSoldItem { get; private set; } = new UnityEvent<ShopItem>();
+    public UnityEvent<Item> ShopBoughtItem { get; private set; } = new UnityEvent<Item>();
+    public UnityEvent<Item> ShopSoldItem { get; private set; } = new UnityEvent<Item>();
 
-    public void BuyItem(ShopItem shopItem)
+    public void BuyItem(Item shopItem)
     {
         shopItem.Amount++;
         ShopBoughtItem.Invoke(shopItem);
 
     }
 
-    public void SellItem(ShopItem shopItem)
+    public void SellItem(Item shopItem)
     {
         shopItem.Amount--;
         ShopSoldItem.Invoke(shopItem);
     }
 
-    public bool HasItem(ShopItem shopItem) => _shopItems.Contains(shopItem);
+    public bool HasItem(Item shopItem) => _shopItems.Contains(shopItem);
 
 
 }

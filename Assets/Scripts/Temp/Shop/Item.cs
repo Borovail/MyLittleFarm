@@ -2,14 +2,14 @@
 using System;
 
 [Serializable]
-public class ShopItem
+public class Item
 {
     public string Name;
     public float Price;
     public int Amount;
     public Sprite Icon;
 
-    public ShopItem(string name, float price, int amount, Sprite icon)
+    public Item(string name, float price, int amount, Sprite icon)
     {
         Name = name;
         Price = price;

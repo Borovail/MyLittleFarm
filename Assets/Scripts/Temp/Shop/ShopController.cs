@@ -37,11 +37,11 @@ public class ShopController : MonoBehaviour, IInteractable
 
     private void BuyItem()
     {
-        var buyCommand = _shopCommandFactory.CreateBuyCommand(_shop, inventory.CurrectItem); 
+        var buyCommand = _shopCommandFactory.CreateBuyCommand(_shop); 
         _commandInvoker.ExecuteCommand(buyCommand);
     }
 
-    private void SellItem(ShopItem shopItem)
+    private void SellItem(Item shopItem)
     {
         var sellCommand = _shopCommandFactory.CreateSellCommand(_shop, shopItem);
         _commandInvoker.ExecuteCommand(sellCommand);
