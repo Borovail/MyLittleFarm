@@ -2,17 +2,22 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform Player;
+    private Transform _player;
     public float SmoothSpeed = 1f; 
     public Vector2 InnerBounds; 
 
-    private Vector3 _velocity = Vector3.zero; 
+    private Vector3 _velocity = Vector3.zero;
 
-    void LateUpdate()
+    public void Initialize(Transform player)
     {
-        if (Player == null)
+        _player = player;
+    }
+
+    private void LateUpdate()
+    {
+        if (_player == null)
         {
-            Debug.LogWarning("Player is not set in CameraFollow script");
+            Debug.LogWarning("_player is not set in CameraFollow script");
             return;
         }
 
@@ -21,9 +26,9 @@ public class CameraFollow : MonoBehaviour
         float topBound = transform.position.y + InnerBounds.y;
         float bottomBound = transform.position.y - InnerBounds.y;
 
-        if(Player.position.x < leftBound || Player.position.x > rightBound || Player.position.y > topBound || Player.position.y < bottomBound)
+        if(_player.position.x < leftBound || _player.position.x > rightBound || _player.position.y > topBound || _player.position.y < bottomBound)
         {
-            Vector3 desiredPosition = new Vector3(Player.position.x, Player.position.y, transform.position.z);
+            Vector3 desiredPosition = new Vector3(_player.position.x, _player.position.y, transform.position.z);
             transform.position = Vector3.SmoothDamp(transform.position, desiredPosition, ref _velocity, SmoothSpeed);
         }
     }

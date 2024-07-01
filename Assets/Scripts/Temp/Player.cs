@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float MoveSpeed = 1f;
     [SerializeField] private float RaycastDistance = 1f;
     [SerializeField] private float RaycastDrawTime = 2f;
-    private PlayerStats _playerStats = new PlayerStats(0);
 
     [SerializeField] private LayerMask _interactableLayer;
     [SerializeField] private Inventory _inventory;
@@ -19,15 +18,22 @@ public class Player : MonoBehaviour
     private IInteractable _currentInteractable;
     private Collider2D _currentCollider;
 
+    private PlayerStats _playerStats;
     private CommandInvoker _commandInvoker;
+    PlayerInteractionVisitor _interactionVisitor;
+
+
+    public void Initialize(CommandInvoker commandInvoker, PlayerStats playerStats)
+    {
+        _commandInvoker = commandInvoker;
+        _playerStats = playerStats;
+    }
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-
+        _interactionVisitor = new PlayerInteractionVisitor(_inventory, _commandInvoker, this);
         _playerInputsActions = new InputSystem_Actions();
-
-        _commandInvoker = new CommandInvoker();
     }
 
     private void OnEnable()
@@ -71,8 +77,7 @@ public class Player : MonoBehaviour
     private void OnMenu(InputAction.CallbackContext obj) => Debug.Log("Open menu");
     private void OnInteract(InputAction.CallbackContext obj)
     {
-        PlayerInteractionVisitor visitor = new PlayerInteractionVisitor(_inventory, _commandInvoker, this);
-        _currentInteractable?.Accept(visitor);
+        _currentInteractable?.Accept(_interactionVisitor);
     }
     private void Move(Vector2 direction) => _rigidbody.velocity = direction * MoveSpeed;
 

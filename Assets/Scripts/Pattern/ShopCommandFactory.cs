@@ -1,15 +1,17 @@
 ﻿public class ShopCommandFactory
 {
     private PlayerStats _playerStats;
+    private Inventory _inventory;
 
-    public ShopCommandFactory(PlayerStats playerStats)
+    public ShopCommandFactory(PlayerStats playerStats, Inventory inventory)
     {
         _playerStats = playerStats;
+        _inventory = inventory;
     }
 
-    public Command CreateBuyCommand(Shop shop,Item item)
+    public Command CreateBuyCommand(Shop shop)
     {
-        return new BuyItemCommand(shop, item);
+        return new BuyItemCommand(shop, _inventory.CurrentItem);
     }
 
     public Command CreateSellCommand(Shop shop,Item item)
