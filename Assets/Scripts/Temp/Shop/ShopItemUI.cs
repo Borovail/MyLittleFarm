@@ -5,13 +5,14 @@ using UnityEngine.UI;
 
 public class ShopItemUI : MonoBehaviour, IPointerClickHandler
 {
-    [SerializeField] private Image icon;
-    [SerializeField] private Text itemAmount;
-    [SerializeField] private Text itemPrice;
-
-    public UnityEvent<ShopItemUI> ItemClicked { get; private set; } = new UnityEvent<ShopItemUI>();
+    [SerializeField] private Image _icon;
+    [SerializeField] private Text _itemAmount;
+    [SerializeField] private Text _itemPrice;
 
     private Item _shopItem;
+
+    public UnityEvent<ShopItemUI> ItemClicked { get; private set; } = new ();
+
 
     public Item ShopItem
     {
@@ -19,9 +20,9 @@ public class ShopItemUI : MonoBehaviour, IPointerClickHandler
         set 
         {
             _shopItem = value;
-            icon.sprite = ShopItem.Icon;
-            itemAmount.text = ShopItem.Amount.ToString();
-            itemPrice.text = ShopItem.Price.ToString();
+            _icon.sprite = ShopItem.Icon;
+            _itemAmount.text = ShopItem.Amount.ToString();
+            _itemPrice.text = ShopItem.Price.ToString();
             Debug.Log($"ShopItemUI: {ShopItem} set");
         }
     }
@@ -29,7 +30,7 @@ public class ShopItemUI : MonoBehaviour, IPointerClickHandler
     public void UpdateItemCount(int amount)
     {
         _shopItem.Amount += amount;
-        itemAmount.text = _shopItem.Amount.ToString();
+        _itemAmount.text = _shopItem.Amount.ToString();
         Debug.Log($"ShopItemUI count updated with {amount}");
     }
     public void OnPointerClick(PointerEventData eventData)
@@ -44,6 +45,7 @@ public class ShopItemUI : MonoBehaviour, IPointerClickHandler
 
     public void Destroy()
     {
+        Debug.Log($"ShopItemUU: {_shopItem} destroyed");
         Destroy(gameObject);
     }
 

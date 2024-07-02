@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float RaycastDrawTime = 2f;
 
     [SerializeField] private LayerMask _interactableLayer;
-    [SerializeField] private Inventory _inventory;
 
     private Rigidbody2D _rigidbody;
     private InputSystem_Actions _playerInputsActions;
@@ -18,22 +17,28 @@ public class Player : MonoBehaviour
     private IInteractable _currentInteractable;
     private Collider2D _currentCollider;
 
+    private Inventory _inventory;
     private PlayerStats _playerStats;
     private CommandInvoker _commandInvoker;
-    PlayerInteractionVisitor _interactionVisitor;
+    private PlayerInteractionVisitor _interactionVisitor;
 
 
-    public void Initialize(CommandInvoker commandInvoker, PlayerStats playerStats)
+    public void Initialize(CommandInvoker commandInvoker, PlayerStats playerStats,Inventory inventory)
     {
         _commandInvoker = commandInvoker;
         _playerStats = playerStats;
+        _inventory = inventory;
     }
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
-        _interactionVisitor = new PlayerInteractionVisitor(_inventory, _commandInvoker, this);
         _playerInputsActions = new InputSystem_Actions();
+    }
+
+    private void Start()
+    {
+        _interactionVisitor = new PlayerInteractionVisitor(_inventory, _commandInvoker, this);
     }
 
     private void OnEnable()

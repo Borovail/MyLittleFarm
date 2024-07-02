@@ -18,6 +18,7 @@
 
     public void Visit(Field field)
     {
+        _inventory.AddItem(new Item("Carrot", 10f,1,null));
         //_commandInvoker.ExecuteCommand(new PlantCommand(field,_inventory._item._crop));
     }
 

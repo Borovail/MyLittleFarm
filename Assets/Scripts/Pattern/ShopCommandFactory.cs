@@ -11,7 +11,7 @@
 
     public Command CreateBuyCommand(Shop shop)
     {
-        return new BuyItemCommand(shop, _inventory._item);
+        return null; /*new BuyItemCommand(shop, _inventory.I);*/
     }
 
     public Command CreateSellCommand(Shop shop,Item item)
