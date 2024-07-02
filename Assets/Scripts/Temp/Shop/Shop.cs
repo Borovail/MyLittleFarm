@@ -4,10 +4,15 @@ using UnityEngine.Events;
 
 public class Shop
 {
-    private List<Item> _shopItems = new List<Item>();
+    private List<Item> _shopItems;
 
     public UnityEvent<Item> ShopBoughtItem { get; private set; } = new UnityEvent<Item>();
     public UnityEvent<Item> ShopSoldItem { get; private set; } = new UnityEvent<Item>();
+
+    public void SetItems(List<Item> shopItems)
+    {
+        _shopItems = shopItems;
+    }
 
     public void BuyItem(Item shopItem)
     {

@@ -14,7 +14,7 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private Button _buyButton;
     [SerializeField] private Button _sellButton;
 
-    [SerializeField] private Transform _shopLayoutGroup;
+    [SerializeField] private Transform _itemsGrid;
 
     private List<ShopItemUI> _shopItemUIs = new List<ShopItemUI>();
     private ShopItemUI _currentShopItemUI;
@@ -26,12 +26,12 @@ public class ShopUI : MonoBehaviour
     {
         foreach (var item in items)
         {
-            var shopItemUI = Instantiate(_shopItemUIPrefab, _shopLayoutGroup);
+            var shopItemUI = Instantiate(_shopItemUIPrefab, _itemsGrid);
             shopItemUI.SetItem(item);
             _shopItemUIs.Add(shopItemUI);
             shopItemUI.ItemClicked.AddListener(OnShopItemClicked);
-
         }
+        Debug.Log("ShopUI items set");
     }   
 
     private void OnEnable()
@@ -62,7 +62,7 @@ public class ShopUI : MonoBehaviour
     private void OnSliderValueChanged(float value)
     {
         _totalAmount.text = value.ToString();
-        _totalPrice.text = (_currentShopItemUI.ShopItem.Price * value).ToString();
+        _totalPrice.text = (_currentShopItemUI.GetItem().Price * value).ToString();
     }
 
     public void UpdateUI(Item shopItem)

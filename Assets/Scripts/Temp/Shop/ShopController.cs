@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ShopController : MonoBehaviour, IInteractable
 {
@@ -11,6 +12,18 @@ public class ShopController : MonoBehaviour, IInteractable
     private void Start()
     {
         _shop = new Shop();
+
+        List<Item> shopItems = new List<Item>
+        {
+            new Item("Item1", 10, 100,null),
+            new Item("Item2", 20, 200, null),
+            new Item("Item3", 30, 300, null),
+            new Item("Item4", 40, 400,null),
+            new Item("Item5", 50, 500, null),
+        };
+
+        _shop.SetItems(shopItems);
+        ShopUI.SetItems(shopItems);
     }
 
     public void Initialize(ShopCommandFactory shopCommandFactory, CommandInvoker commandInvoker)

@@ -52,6 +52,7 @@ public class InventoryUI : MonoBehaviour
             _inventorySlots.Add(inventorySlot);
             inventorySlot.SlotSelected.AddListener(OnSlotSelected);
         }
+        Debug.Log("InventoryUI slots set");
     }
 
 
