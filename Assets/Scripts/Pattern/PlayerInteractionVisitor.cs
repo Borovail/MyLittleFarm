@@ -29,7 +29,8 @@
 
     public void Visit(Chest chest)
     {
-        _commandInvoker.ExecuteCommand(new OpenChestCommand(chest));
+        //_commandInvoker.ExecuteCommand(new OpenChestCommand(chest));
+        _inventory.RemoveItem(new Item("Carrot", 10f, 1, null));
     }
 
 }

@@ -13,19 +13,17 @@ public class ShopItemUI : MonoBehaviour, IPointerClickHandler
 
     public UnityEvent<ShopItemUI> ItemClicked { get; private set; } = new ();
 
+    public Item GetItem() => _shopItem;
 
-    public Item ShopItem
+    public void SetItem(Item item)
     {
-        get { return _shopItem; }
-        set 
-        {
-            _shopItem = value;
-            _icon.sprite = ShopItem.Icon;
-            _itemAmount.text = ShopItem.Amount.ToString();
-            _itemPrice.text = ShopItem.Price.ToString();
-            Debug.Log($"ShopItemUI: {ShopItem} set");
-        }
+        _shopItem = item;
+        _icon.sprite = item.Icon;
+        _itemAmount.text = item.Amount.ToString();
+        _itemPrice.text = item.Price.ToString();
+        Debug.Log($"ShopItemUI: {_shopItem} set");
     }
+
 
     public void UpdateItemCount(int amount)
     {

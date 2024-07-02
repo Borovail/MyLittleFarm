@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField] private InventorySlot _slotPrefab;
+    [SerializeField] private InventoryItemUI _inventoryItemUIPrefab;
 
     private List<InventoryItemUI> _inventoryItemUIs = new List<InventoryItemUI>();
     private List<InventorySlot> _inventorySlots = new List<InventorySlot>();
@@ -22,14 +23,23 @@ public class InventoryUI : MonoBehaviour
 
     public void OnItemAdded(Item item)
     {
-        Debug.Log($"Shop UI updated with new item: {item}");
+        var inventorySlot = _inventorySlots.Find(s => s.GetInventoryItemUI() == null);
+        var inventoryItemUI = Instantiate(_inventoryItemUIPrefab, inventorySlot.transform);
+        inventoryItemUI.SetInventoryItem(item);
+        inventorySlot.SetInventoryItemUI(inventoryItemUI);
+        _inventoryItemUIs.Add(inventoryItemUI);
+        Debug.Log($"UI item added: {item}");
     }
     public void OnItemUpdated(Item item)
     {
-        Debug.Log($"UI item updated with new item: {item}");
+        _inventoryItemUIs.Find(i => i.GetInventoryItem().Name == item.Name).UpdateItem(item);
+        Debug.Log($"UI item updated: {item}");
     }
     public void OnItemRemoved(Item item)
     {
+        var inventoryItemUI = _inventoryItemUIs.Find(i => i.GetInventoryItem().Name == item.Name);
+        _inventoryItemUIs.Remove(inventoryItemUI);
+        inventoryItemUI.Destroy();
         Debug.Log($"UI item removed: {item}");
     }
 

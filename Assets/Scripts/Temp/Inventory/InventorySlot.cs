@@ -16,8 +16,8 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
 
     public void SetInventoryItemUI(InventoryItemUI inventoryItemUI)
     {
-        _inventoryItemUI = inventoryItemUI;
-        Instantiate(inventoryItemUI, transform);
+        inventoryItemUI.transform.SetParent(transform);
+        inventoryItemUI.transform.localPosition = Vector3.zero;
     }
 
     public InventoryItemUI GetInventoryItemUI()

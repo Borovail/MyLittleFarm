@@ -12,7 +12,6 @@ public class Inventory
     public UnityEvent<Item> ItemUpdated = new();
     public UnityEvent<Item> ItemRemoved = new();
 
-
     public bool InventoryFull() => _items.Count >= 7;
     public bool ContainsItem(Item item) => _items.Contains(item);
 
