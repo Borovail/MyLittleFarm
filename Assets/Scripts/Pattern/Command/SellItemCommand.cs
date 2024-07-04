@@ -24,14 +24,14 @@ public class SellItemCommand : Command
             Debug.Log($"{_shopItem.Name} is currently out of stock");;
             return;
         }
-        if(_shopItem.Price <= _playerGold)
-        {
-           _shop.SellItem(_shopItem);
-        }
-        else
-        {
-            Debug.Log($"Not enough gold for purchase.\n Needed gold: {_shopItem.Price},player's current gold: {_playerGold}");
-        }
+        //if (_shopItem.Price <= _playerGold)
+        //{
+            //_shop.SellItem(_shopItem);
+        //}
+        //else
+        //{
+        //    Debug.Log($"Not enough gold for purchase.\n Needed gold: {_shopItem.Price},player's current gold: {_playerGold}");
+        //}
     }
 }
 

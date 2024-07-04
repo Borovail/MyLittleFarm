@@ -17,6 +17,11 @@ public class Inventory
 
     public void AddItem(Item item)
     {
+        if (item == null)
+        {
+            Debug.Log("Inventory: Item to add is null");
+            return;
+        }
         if (InventoryFull())
         {
             Debug.Log("Inventory: Full");
@@ -37,6 +42,11 @@ public class Inventory
 
     public void RemoveItem(Item item)
     {
+        if(item == null)
+        {
+            Debug.Log("Inventory: Item to remove is null");
+            return;
+        }
         var existingItem = _items.Find(i => i.Name == item.Name);
         if (existingItem == null)
         {

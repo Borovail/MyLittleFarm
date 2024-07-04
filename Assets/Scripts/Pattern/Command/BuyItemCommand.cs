@@ -20,7 +20,7 @@ public class BuyItemCommand : Command
         }
         if (_shop.HasItem(_item))
         {
-            _shop.BuyItem(_item);
+            //_shop.BuyItem(_item);
         }
         else
         {

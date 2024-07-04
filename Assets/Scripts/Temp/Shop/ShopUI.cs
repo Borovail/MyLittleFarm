@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -16,11 +17,14 @@ public class ShopUI : MonoBehaviour
 
     [SerializeField] private Transform _itemsGrid;
 
-    private List<ShopItemUI> _shopItemUIs = new List<ShopItemUI>();
-    private ShopItemUI _currentShopItemUI;
 
-    public UnityEvent<Item> BuyButtonClicked { get; private set; } = new ();
-    public UnityEvent SellButtonClicked { get; private set; } = new();
+
+    private List<ShopItemUI> _shopItemUIs = new List<ShopItemUI>();
+    private ShopTransaction _currentShopTransaction = new ShopTransaction();
+    private Item _currentItem;
+
+    public UnityEvent<ShopTransaction> BuyButtonClicked { get; private set; } = new();
+    public UnityEvent<ShopTransaction> SellButtonClicked { get; private set; } = new();
 
     public void SetItems(List<Item> items)
     {
@@ -32,19 +36,20 @@ public class ShopUI : MonoBehaviour
             shopItemUI.ItemClicked.AddListener(OnShopItemClicked);
         }
         Debug.Log("ShopUI items set");
-    }   
+    }
 
     private void OnEnable()
     {
-        _buyButton.onClick.AddListener( () =>  BuyButtonClicked.Invoke(_currentShopItemUI.GetItem()));
-        _sellButton.onClick.AddListener(SellButtonClicked.Invoke);
+        _buyButton.onClick.AddListener(()=>BuyButtonClicked.Invoke(_currentShopTransaction));
+        _sellButton.onClick.AddListener(()=>SellButtonClicked.Invoke(_currentShopTransaction));
         _totalAmountSlider.onValueChanged.AddListener(OnSliderValueChanged);
     }
 
+
     private void OnDisable()
     {
-        _buyButton.onClick.RemoveListener( () =>  BuyButtonClicked.Invoke(_currentShopItemUI.GetItem()));
-        _sellButton.onClick.RemoveListener(SellButtonClicked.Invoke);
+        _buyButton.onClick.RemoveListener(()=>BuyButtonClicked.Invoke(_currentShopTransaction));
+        _sellButton.onClick.RemoveListener(()=>SellButtonClicked.Invoke(_currentShopTransaction));
         _totalAmountSlider.onValueChanged.RemoveListener(OnSliderValueChanged);
         foreach (var shopItemUI in _shopItemUIs)
         {
@@ -54,21 +59,26 @@ public class ShopUI : MonoBehaviour
 
     private void OnShopItemClicked(ShopItemUI shopItemUI)
     {
-        _currentShopItemUI = shopItemUI;
+        _currentItem = shopItemUI.GetItem();
+        _currentShopTransaction.ItemName = _currentItem.Name;
+        _currentShopTransaction.Amount = _currentItem.Amount;
         _totalAmountSlider.value = 0;
-        _totalAmountSlider.maxValue = shopItemUI.GetItem().Amount;
+        _totalAmountSlider.maxValue = _currentItem.Amount;
     }
 
     private void OnSliderValueChanged(float value)
     {
+        _currentShopTransaction.Amount = (int)value;
         _totalAmount.text = value.ToString();
-        _totalPrice.text = (_currentShopItemUI.GetItem().Price * value).ToString();
+        _totalPrice.text = (_currentItem.Price * value).ToString();
     }
 
     public void UpdateUI(Item shopItem)
     {
-        _currentShopItemUI.UpdateItemCount(shopItem.Amount);
+        var shopItemUI = _shopItemUIs.Find(x => x.GetItem().Name == shopItem.Name);
+        shopItemUI.UpdateItem(shopItem);
         _totalAmountSlider.value = 0;
+        _totalAmountSlider.maxValue = shopItem.Amount;
         Debug.Log($"ShopUI updated with {shopItem}");
     }
 

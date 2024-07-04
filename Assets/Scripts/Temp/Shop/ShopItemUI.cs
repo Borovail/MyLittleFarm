@@ -9,33 +9,32 @@ public class ShopItemUI : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Text _itemAmount;
     [SerializeField] private Text _itemPrice;
 
-    private Item _shopItem;
-
+    private Item _item;
     public UnityEvent<ShopItemUI> ItemClicked { get; private set; } = new ();
 
-    public Item GetItem() => _shopItem;
+    public Item GetItem() => _item;
 
     public void SetItem(Item item)
     {
-        _shopItem = item;
+        _item = item;
         _icon.sprite = item.Icon;
         _itemAmount.text = item.Amount.ToString();
         _itemPrice.text = item.Price.ToString();
-        Debug.Log($"ShopItemUI: {_shopItem} set");
+        Debug.Log($"ShopItemUI: {_item} set");
     }
 
-
-    public void UpdateItemCount(int amount)
+    public void UpdateItem(Item item)
     {
-        _shopItem.Amount += amount;
-        _itemAmount.text = _shopItem.Amount.ToString();
-        Debug.Log($"ShopItemUI count updated with {amount}");
+        _item = item;
+        _itemAmount.text = item.Amount.ToString();
+        Debug.Log($"ShopItemUI: {_item} updated");
     }
+
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            Debug.Log($"ShopItemUI: {_shopItem} clicked");
+            Debug.Log($"ShopItemUI: {_item} clicked");
             // Make an animation of the item being clicked
             ItemClicked?.Invoke(this);
         }
@@ -43,7 +42,7 @@ public class ShopItemUI : MonoBehaviour, IPointerClickHandler
 
     public void Destroy()
     {
-        Debug.Log($"ShopItemUU: {_shopItem} destroyed");
+        Debug.Log($"ShopItemUU: {_item.Name} destroyed");
         Destroy(gameObject);
     }
 
